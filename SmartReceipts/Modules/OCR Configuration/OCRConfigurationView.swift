@@ -20,6 +20,10 @@ protocol OCRConfigurationViewInterface {
     var OCR50Price: AnyObserver<String> { get }
     
     func updateScansCount()
+    
+    var logoutTap: Observable<Void> { get }
+    var successLogoutHandler: AnyObserver<Void> { get }
+    var errorHandler: AnyObserver<String> { get }
 }
 
 //MARK: OCRConfigurationView Class
@@ -35,6 +39,7 @@ final class OCRConfigurationView: UserInterface {
     
     @IBOutlet fileprivate weak var autoScans: UISwitch!
     @IBOutlet fileprivate weak var allowSaveImages: UISwitch!
+    @IBOutlet fileprivate weak var logoutButton: UIBarButtonItem!
     
     private let bag = DisposeBag()
     
@@ -60,6 +65,11 @@ final class OCRConfigurationView: UserInterface {
     }
     
     private func configureRx() {
+        AuthService.shared.loggedInObservable
+            .subscribe(onNext: { [unowned self] loggedIn in
+                self.logoutButton.isEnabled = loggedIn
+            }).disposed(by: bag)
+        
         updateScansCount()
         
         autoScans.rx.isOn
@@ -81,6 +91,7 @@ final class OCRConfigurationView: UserInterface {
         availablePurchases.text = LocalizedString("ocr_configuration_available_purchases")
         autoScansLabel.text = LocalizedString("ocr_is_enabled")
         saveImagesLabel.text = LocalizedString("ocr_save_scans_to_improve_results")
+        logoutButton.title = LocalizedString("logout_button_text")
         
         // Note: Android split these strings across multiple files, so we combine them here
         let localizedDescriptionFormat = "%@\n\n%@\n\n%@"
@@ -99,6 +110,34 @@ extension OCRConfigurationView: OCRConfigurationViewInterface {
     
     var OCR10Price: AnyObserver<String> { return scans10button.rx.price }
     var OCR50Price: AnyObserver<String> { return scans50button.rx.price }
+    
+    var successLogoutHandler: AnyObserver<Void> {
+        return AnyObserver<Void>(eventHandler: { [weak self] event in
+            switch event {
+            case .next:
+                Logger.info("Successfully logged out")
+                self?.dismiss(animated: true, completion: nil)
+            default: break
+            }
+        })
+    }
+    
+    var logoutTap: Observable<Void> {
+        return logoutButton.rx.tap.asObservable()
+    }
+    
+    var errorHandler: AnyObserver<String> {
+        return AnyObserver<String>(eventHandler: { [weak self] event in
+            switch event {
+            case .next(let errorMessage):
+                let alert = UIAlertController(title: LocalizedString("generic_error_alert_title"), message: errorMessage, preferredStyle: .alert)
+                let action = UIAlertAction(title: LocalizedString("generic_button_title_ok"), style: .cancel, handler: nil)
+                alert.addAction(action)
+                self?.present(alert, animated: true, completion: nil)
+            default: break
+            }
+        })
+    }
 }
 
 // MARK: - VIPER COMPONENTS API (Auto-generated code)

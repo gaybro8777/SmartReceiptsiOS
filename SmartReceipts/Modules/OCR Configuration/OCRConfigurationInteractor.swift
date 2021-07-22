@@ -16,14 +16,17 @@ import Toaster
 class OCRConfigurationInteractor: Interactor {
     private let bag = DisposeBag()
     private var purchaseService: PurchaseService!
+    private var authService: AuthService!
     
     required init() {
         purchaseService = PurchaseService()
+        authService = .shared
     }
     
-    init(purchaseService: PurchaseService) {
+    init(purchaseService: PurchaseService, authService: AuthService = .shared) {
         super.init()
         self.purchaseService = purchaseService
+        self.authService = authService
     }
     
     func requestProducts() -> Observable<SKProduct> {
@@ -40,6 +43,22 @@ class OCRConfigurationInteractor: Interactor {
                 }, onError: { error in
                     hud.hide()
                 })
+    }
+    
+    var logout: AnyObserver<Void> {
+        return AnyObserver<Void>(eventHandler: { [unowned self] event in
+            switch event {
+            case .next:
+                self.authService.logout()
+                    .catchError({ error -> Single<Void> in
+                        self.presenter.errorHandler.onNext(error.localizedDescription)
+                        return .never()
+                    }).asObservable()
+                    .bind(to: self.presenter.successLogout)
+                    .disposed(by: self.bag)
+            default: break
+            }
+        })
     }
 }
 

@@ -25,15 +25,12 @@ protocol AuthViewInterface {
     var errorHandler: AnyObserver<String> { get }
     var successLoginHandler: AnyObserver<Void> { get }
     var successSignupHandler: AnyObserver<Void> { get }
-    var successLogoutHandler: AnyObserver<Void> { get }
-    var logoutTap: Observable<Void> { get }
 }
 
 //MARK: AuthView Class
 final class AuthView: UserInterface {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
-    @IBOutlet weak var logoutButton: UIBarButtonItem!
     @IBOutlet weak var closeButton: UIBarButtonItem!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -64,11 +61,6 @@ final class AuthView: UserInterface {
     }
     
     private func configureRx() {
-        AuthService.shared.loggedInObservable
-            .subscribe(onNext: { [unowned self] loggedIn in
-                self.logoutButton.isEnabled = loggedIn
-            }).disposed(by: bag)
-        
         Observable.combineLatest(emailValidator(), passwordValidator(), resultSelector: {
                 isVaildEmail, isValidPassword -> ValidationResult in
             if !isVaildEmail {
@@ -84,7 +76,7 @@ final class AuthView: UserInterface {
             self.hintLabel.text = result.text
         }).disposed(by: bag)
         
-        Observable.of(loginButton.rx.tap, signupButton.rx.tap, logoutButton.rx.tap)
+        Observable.of(loginButton.rx.tap, signupButton.rx.tap)
             .merge()
             .subscribe(onNext: { [unowned self] _ in
                 self.view.endEditing(true)
@@ -173,21 +165,6 @@ extension AuthView: AuthViewInterface {
             default: break
             }
         })
-    }
-    
-    var successLogoutHandler: AnyObserver<Void> {
-        return AnyObserver<Void>(eventHandler: { [weak self] event in
-            self?.hud?.hide()
-            switch event {
-            case .next:
-                Logger.info("Successfully logged out")
-            default: break
-            }
-        })
-    }
-    
-    var logoutTap: Observable<Void> {
-        return logoutButton.rx.tap.asObservable()
     }
 }
 
