@@ -33,6 +33,18 @@ class OCRConfigurationPresenter: Presenter {
             .subscribe(onNext: { [weak self] _ in
                 self?.view.updateScansCount()
             }).disposed(by: bag)
+        
+        view.logoutTap
+            .bind(to: interactor.logout)
+            .disposed(by: bag)
+    }
+    
+    var errorHandler: AnyObserver<String> {
+        return view.errorHandler
+    }
+    
+    var successLogout: AnyObserver<Void> {
+        return view.successLogoutHandler
     }
 }
 

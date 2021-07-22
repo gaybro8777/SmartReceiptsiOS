@@ -28,10 +28,6 @@ class AuthPresenter: Presenter {
         view.signup
             .bind(to: interactor.signup)
             .disposed(by: bag)
-        
-        view.logoutTap
-            .bind(to: interactor.logout)
-            .disposed(by: bag)
     }
     
     var successLogin: AnyObserver<Void> {
@@ -40,10 +36,6 @@ class AuthPresenter: Presenter {
     
     var successSignup: AnyObserver<Void> {
         return view.successSignupHandler
-    }
-    
-    var successLogout: AnyObserver<Void> {
-        return view.successLogoutHandler
     }
     
     var errorHandler: AnyObserver<String> {

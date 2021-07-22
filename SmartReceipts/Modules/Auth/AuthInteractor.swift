@@ -76,23 +76,6 @@ class AuthInteractor: Interactor {
         })
     }
     
-    var logout: AnyObserver<Void> {
-        return AnyObserver<Void>(eventHandler: { [unowned self] event in
-            switch event {
-            case .next:
-                self.authService.logout()
-                    .catchError({ error -> Single<Void> in
-                        self.presenter.errorHandler.onNext(error.localizedDescription)
-                        return .never()
-                    }).asObservable()
-                    .bind(to: self.presenter.successLogout)
-                    .disposed(by: self.bag)
-            default: break
-            }
-        })
-    }
-    
-    
 }
 
 // MARK: - VIPER COMPONENTS API (Auto-generated code)
