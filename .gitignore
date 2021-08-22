@@ -33,3 +33,7 @@ Pods/
 
 .idea
 .DS_store
+
+# bundler
+vendor/
+
