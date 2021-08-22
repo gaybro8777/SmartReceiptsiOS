@@ -117,7 +117,12 @@ class GraphsViewModel: GraphsViewModelProtocol {
         let categories = Set(receiptsInPeriod.compactMap { $0.category })
         let data = categories.map { category -> GraphsCategoryDataSet.GraphsCategoryData? in
             let price = PricesCollection(currencyCode: trip.defaultCurrency.code)
-            let cReceipts = receiptsInPeriod.filter { $0.category?.code == category.code }
+            let cReceipts = receiptsInPeriod.filter {
+                guard !category.code.isEmpty else {
+                    return $0.category?.name == category.name
+                }
+                return $0.category?.code == category.code
+            }
             cReceipts.forEach { price.addPrice($0.price()) }
             return .init(category: category, total: price)
         }.compactMap { $0 }
