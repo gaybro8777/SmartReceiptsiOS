@@ -64,20 +64,6 @@ import Viperit
         
     }
     
-    
-    
-     override var logout: AnyObserver<Void> {
-        get {
-            return cuckoo_manager.getter("logout",
-                superclassCall:
-                    
-                    super.logout
-                    ,
-                defaultCall: __defaultImplStub!.logout)
-        }
-        
-    }
-    
 
     
 
@@ -98,11 +84,6 @@ import Viperit
 	    
 	    var signup: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockAuthInteractor, AnyObserver<Credentials>> {
 	        return .init(manager: cuckoo_manager, name: "signup")
-	    }
-	    
-	    
-	    var logout: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockAuthInteractor, AnyObserver<Void>> {
-	        return .init(manager: cuckoo_manager, name: "logout")
 	    }
 	    
 	    
@@ -130,11 +111,6 @@ import Viperit
 	        return .init(manager: cuckoo_manager, name: "signup", callMatcher: callMatcher, sourceLocation: sourceLocation)
 	    }
 	    
-	    
-	    var logout: Cuckoo.VerifyReadOnlyProperty<AnyObserver<Void>> {
-	        return .init(manager: cuckoo_manager, name: "logout", callMatcher: callMatcher, sourceLocation: sourceLocation)
-	    }
-	    
 	
 	    
 	}
@@ -154,14 +130,6 @@ import Viperit
      override var signup: AnyObserver<Credentials> {
         get {
             return DefaultValueRegistry.defaultValue(for: (AnyObserver<Credentials>).self)
-        }
-        
-    }
-    
-    
-     override var logout: AnyObserver<Void> {
-        get {
-            return DefaultValueRegistry.defaultValue(for: (AnyObserver<Void>).self)
         }
         
     }
@@ -363,20 +331,6 @@ import Viperit
     
     
     
-     override var successLogout: AnyObserver<Void> {
-        get {
-            return cuckoo_manager.getter("successLogout",
-                superclassCall:
-                    
-                    super.successLogout
-                    ,
-                defaultCall: __defaultImplStub!.successLogout)
-        }
-        
-    }
-    
-    
-    
      override var errorHandler: AnyObserver<String> {
         get {
             return cuckoo_manager.getter("errorHandler",
@@ -427,11 +381,6 @@ import Viperit
 	    }
 	    
 	    
-	    var successLogout: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockAuthPresenter, AnyObserver<Void>> {
-	        return .init(manager: cuckoo_manager, name: "successLogout")
-	    }
-	    
-	    
 	    var errorHandler: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockAuthPresenter, AnyObserver<String>> {
 	        return .init(manager: cuckoo_manager, name: "errorHandler")
 	    }
@@ -467,11 +416,6 @@ import Viperit
 	    }
 	    
 	    
-	    var successLogout: Cuckoo.VerifyReadOnlyProperty<AnyObserver<Void>> {
-	        return .init(manager: cuckoo_manager, name: "successLogout", callMatcher: callMatcher, sourceLocation: sourceLocation)
-	    }
-	    
-	    
 	    var errorHandler: Cuckoo.VerifyReadOnlyProperty<AnyObserver<String>> {
 	        return .init(manager: cuckoo_manager, name: "errorHandler", callMatcher: callMatcher, sourceLocation: sourceLocation)
 	    }
@@ -499,14 +443,6 @@ import Viperit
     
     
      override var successSignup: AnyObserver<Void> {
-        get {
-            return DefaultValueRegistry.defaultValue(for: (AnyObserver<Void>).self)
-        }
-        
-    }
-    
-    
-     override var successLogout: AnyObserver<Void> {
         get {
             return DefaultValueRegistry.defaultValue(for: (AnyObserver<Void>).self)
         }
@@ -4314,6 +4250,20 @@ import Viperit
     
 
     
+    
+    
+     override var logout: AnyObserver<Void> {
+        get {
+            return cuckoo_manager.getter("logout",
+                superclassCall:
+                    
+                    super.logout
+                    ,
+                defaultCall: __defaultImplStub!.logout)
+        }
+        
+    }
+    
 
     
 
@@ -4357,6 +4307,11 @@ import Viperit
 	    }
 	    
 	    
+	    var logout: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockOCRConfigurationInteractor, AnyObserver<Void>> {
+	        return .init(manager: cuckoo_manager, name: "logout")
+	    }
+	    
+	    
 	    func requestProducts() -> Cuckoo.ClassStubFunction<(), Observable<SKProduct>> {
 	        let matchers: [Cuckoo.ParameterMatcher<Void>] = []
 	        return .init(stub: cuckoo_manager.createStub(for: MockOCRConfigurationInteractor.self, method: "requestProducts() -> Observable<SKProduct>", parameterMatchers: matchers))
@@ -4381,6 +4336,11 @@ import Viperit
 	    }
 	
 	    
+	    
+	    var logout: Cuckoo.VerifyReadOnlyProperty<AnyObserver<Void>> {
+	        return .init(manager: cuckoo_manager, name: "logout", callMatcher: callMatcher, sourceLocation: sourceLocation)
+	    }
+	    
 	
 	    
 	    @discardableResult
@@ -4399,6 +4359,14 @@ import Viperit
 }
 
  class OCRConfigurationInteractorStub: OCRConfigurationInteractor {
+    
+    
+     override var logout: AnyObserver<Void> {
+        get {
+            return DefaultValueRegistry.defaultValue(for: (AnyObserver<Void>).self)
+        }
+        
+    }
     
 
     
@@ -4452,6 +4420,34 @@ import Viperit
     
 
     
+    
+    
+     override var errorHandler: AnyObserver<String> {
+        get {
+            return cuckoo_manager.getter("errorHandler",
+                superclassCall:
+                    
+                    super.errorHandler
+                    ,
+                defaultCall: __defaultImplStub!.errorHandler)
+        }
+        
+    }
+    
+    
+    
+     override var successLogout: AnyObserver<Void> {
+        get {
+            return cuckoo_manager.getter("successLogout",
+                superclassCall:
+                    
+                    super.successLogout
+                    ,
+                defaultCall: __defaultImplStub!.successLogout)
+        }
+        
+    }
+    
 
     
 
@@ -4480,6 +4476,16 @@ import Viperit
 	    }
 	    
 	    
+	    var errorHandler: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockOCRConfigurationPresenter, AnyObserver<String>> {
+	        return .init(manager: cuckoo_manager, name: "errorHandler")
+	    }
+	    
+	    
+	    var successLogout: Cuckoo.ClassToBeStubbedReadOnlyProperty<MockOCRConfigurationPresenter, AnyObserver<Void>> {
+	        return .init(manager: cuckoo_manager, name: "successLogout")
+	    }
+	    
+	    
 	    func viewHasLoaded() -> Cuckoo.ClassStubNoReturnFunction<()> {
 	        let matchers: [Cuckoo.ParameterMatcher<Void>] = []
 	        return .init(stub: cuckoo_manager.createStub(for: MockOCRConfigurationPresenter.self, method: "viewHasLoaded()", parameterMatchers: matchers))
@@ -4499,6 +4505,16 @@ import Viperit
 	    }
 	
 	    
+	    
+	    var errorHandler: Cuckoo.VerifyReadOnlyProperty<AnyObserver<String>> {
+	        return .init(manager: cuckoo_manager, name: "errorHandler", callMatcher: callMatcher, sourceLocation: sourceLocation)
+	    }
+	    
+	    
+	    var successLogout: Cuckoo.VerifyReadOnlyProperty<AnyObserver<Void>> {
+	        return .init(manager: cuckoo_manager, name: "successLogout", callMatcher: callMatcher, sourceLocation: sourceLocation)
+	    }
+	    
 	
 	    
 	    @discardableResult
@@ -4511,6 +4527,22 @@ import Viperit
 }
 
  class OCRConfigurationPresenterStub: OCRConfigurationPresenter {
+    
+    
+     override var errorHandler: AnyObserver<String> {
+        get {
+            return DefaultValueRegistry.defaultValue(for: (AnyObserver<String>).self)
+        }
+        
+    }
+    
+    
+     override var successLogout: AnyObserver<Void> {
+        get {
+            return DefaultValueRegistry.defaultValue(for: (AnyObserver<Void>).self)
+        }
+        
+    }
     
 
     

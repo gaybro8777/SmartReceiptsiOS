@@ -68,7 +68,6 @@ class AuthModuleTest: XCTestCase {
             mock.successLogin.get.thenReturn(resultVoidObserver)
             mock.successSignup.get.thenReturn(resultVoidObserver)
             mock.errorHandler.get.thenReturn(resultObserver)
-            mock.successLogout.get.thenReturn(resultVoidObserver)
         }
     }
     
@@ -112,22 +111,6 @@ class AuthModuleTest: XCTestCase {
             .bind(to: interactor.signup)
             .disposed(by: bag)
 
-        wait(for: [expectation], timeout: TIME_OUT)
-        XCTAssertFalse(result.isEmpty)
-    }
-
-    func testLogoutSuccess() {
-        _ = try? authService.login(credentials: TEST_CREDENTIALS).toBlocking(timeout: TIME_OUT).single()
-        interactor.logout.onNext(())
-        wait(for: [expectation], timeout: TIME_OUT)
-        XCTAssertEqual("ok", result)
-    }
-
-    func testLogoutError() {
-        authService.negative = true
-        
-        _ = try? authService.logout().toBlocking(timeout: 10).single()
-        interactor.logout.onNext(())
         wait(for: [expectation], timeout: TIME_OUT)
         XCTAssertFalse(result.isEmpty)
     }
