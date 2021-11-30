@@ -52,6 +52,16 @@ extension ButtonStyle {
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
     }
     
+    static let purchaseButton = ButtonStyle().making {
+        $0.backgroundColor = .white
+        $0.masksToBounds = false
+        $0.shadowOpacity = 1
+        $0.shadowOffset = .init(width: 0, height: 12)
+        $0.shadowColor = #colorLiteral(red: 0.03921568627, green: 0.003921568627, blue: 0.07843137255, alpha: 0.04)
+        $0.shadowRadius = 16
+        $0.cornerRadius = 24
+    }
+    
     
 }
 

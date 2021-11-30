@@ -20,23 +20,29 @@ class OCRConfigurationPresenter: Presenter {
                 guard let sSelf = self else { return }
                 let price = Observable<String>.just(product.localizedPrice)
                 switch product.productIdentifier {
-                case PRODUCT_OCR_10: _ = price.bind(to: sSelf.view.OCR10Price)
-                case PRODUCT_OCR_50: _ = price.bind(to: sSelf.view.OCR50Price)
+                case PRODUCT_STANDARD_SUB: _ = price.bind(to: sSelf.view.OCR10Price)
+                case PRODUCT_PREMIUM_SUB: _ = price.bind(to: sSelf.view.OCR50Price)
                 default: break
                 }
             }).disposed(by: bag)
         
         Observable<String>
-            .merge([view.buy10ocr.map { PRODUCT_OCR_10 }, view.buy50ocr.map { PRODUCT_OCR_50  }])
-            .flatMap { self.interactor.purchase(product: $0) }
+            .merge([view.buy10ocr.map { PRODUCT_STANDARD_SUB }, view.buy50ocr.map { PRODUCT_PREMIUM_SUB  }])
+            .subscribe(onNext: { [weak self] in
+                self?.buy(productId: $0)
+            }).disposed(by: bag)
+            
+        view.logoutTap
+            .bind(to: interactor.logout)
+            .disposed(by: bag)
+    }
+    
+    private func buy(productId: String) {
+        self.interactor.purchase(product: productId)
             .delay(1, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.view.updateScansCount()
             }).disposed(by: bag)
-        
-        view.logoutTap
-            .bind(to: interactor.logout)
-            .disposed(by: bag)
     }
     
     var errorHandler: AnyObserver<String> {
