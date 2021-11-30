@@ -9,8 +9,7 @@
 import Eureka
 import RxSwift
 import StoreKit
-import Crashlytics
-import Fabric
+import FirebaseCrashlytics
 
 fileprivate let IMAGE_OPTIONS = [512, 1024, 2048, 0]
 
@@ -509,7 +508,7 @@ class SettingsFormView: FormViewController {
             row.value = WBPreferences.crashTrackingEnabled()
         }.onChange({ row in
             WBPreferences.setCrashTrackingEnabled(row.value!)
-            _ = row.value! ? Fabric.with([Crashlytics.self]) : Fabric.with([])
+            Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(row.value!)
         })
             
         <<< DescribedSwitchRow() { row in

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Crashlytics
+import FirebaseCrashlytics
 
 extension FetchedTableViewController {
     typealias CanMoveClosure = (IndexPath) -> Bool
@@ -198,7 +198,7 @@ class DateSectionedTableViewDataSource: FetchedTableViewDataSource {
         
         Logger.logCrashlytics("rawItems.count: \(rawItems.count), index: \(index)")
         guard let item = rawItems[index] as? DateSectionItem else {
-            Crashlytics.sharedInstance().recordError(DataSourceError.error(text: "item is not DateSectionItem"))
+            Crashlytics.crashlytics().record(error: DataSourceError.error(text: "item is not DateSectionItem"))
             return .init(row: index, section: 0)
         }
         
@@ -207,7 +207,7 @@ class DateSectionedTableViewDataSource: FetchedTableViewDataSource {
         let currentItems = deletion ? previousSectionedItems : sectionedItems
         
         guard let items = currentItems[item.sectionDate] else {
-            Crashlytics.sharedInstance().recordError(DataSourceError.error(text: "currentItems not contains not item"))
+            Crashlytics.crashlytics().record(error: DataSourceError.error(text: "currentItems not contains not item"))
             return .init(row: 0, section: section)
         }
         
@@ -218,7 +218,7 @@ class DateSectionedTableViewDataSource: FetchedTableViewDataSource {
             }
         }
         
-        Crashlytics.sharedInstance().recordError(DataSourceError.error(text: "can't map item at index \(index)"))
+        Crashlytics.crashlytics().record(error: DataSourceError.error(text: "can't map item at index \(index)"))
         return .init(row: 0, section: section)
     }
     

@@ -8,7 +8,7 @@
 
 import Foundation
 import CocoaLumberjack.Swift
-import Crashlytics
+import FirebaseCrashlytics
 
 /// Logger wrapper
 /// 
@@ -136,6 +136,6 @@ final class Logger: NSObject {
     
 
     class func logCrashlytics(_ string: String) {
-        CLSLogv("%@", getVaList([string]))
+        Crashlytics.crashlytics().log(format: "%@", arguments: getVaList([string]))
     }
 }

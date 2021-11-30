@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AppTheme: NSObject {
     
@@ -32,9 +33,20 @@ class AppTheme: NSObject {
     class func customizeOnAppLoad() {
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().barTintColor = primaryColor
+        UINavigationBar.appearance().backgroundColor = primaryColor
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor.white]
         UIToolbar.appearance().tintColor = primaryDarkColor
+        
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = primaryColor
+            appearance.titleTextAttributes = [.foregroundColor : UIColor.white]
+            
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
     
     /* Customizes every view controller on load */

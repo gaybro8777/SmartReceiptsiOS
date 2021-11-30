@@ -10,7 +10,7 @@ import Foundation
 import Viperit
 import Firebase
 import RxSwift
-import Crashlytics
+import FirebaseCrashlytics
 import SwiftyStoreKit
 import GoogleSignIn
 
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AppTheme.customizeOnAppLoad()
         EurekaWhitespaceWorkaround.configureTextCells()
-        Crashlytics.sharedInstance().debugMode = DebugStates.isDebug
+        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(!DebugStates.isDebug) 
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [kGADSimulatorID as! String]
         
         _ = FileManager.initTripsDirectory()

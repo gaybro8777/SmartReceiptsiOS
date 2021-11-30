@@ -36,14 +36,13 @@ def pods
     pod 'Moya'
     
     # Firebase
-    pod 'Firebase/Core'
+    pod 'Firebase/Core', '7.2-M1'
     pod 'Firebase/Analytics'
     pod 'Firebase/Messaging'
     pod 'Firebase/AdMob'
+    pod 'Firebase/Crashlytics'
     
     # Google
-    pod 'Fabric'
-    pod 'Crashlytics'
     pod 'GTMAppAuth'
     pod 'GoogleAPIClientForREST/Drive'
     pod 'GoogleSignIn'
@@ -66,4 +65,10 @@ target 'SmartReceiptsTests' do
     pod 'RxTest'
     pod 'Cuckoo'
 
+end
+
+post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
 end
