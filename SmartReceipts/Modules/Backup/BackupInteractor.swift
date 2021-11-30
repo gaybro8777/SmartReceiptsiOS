@@ -22,7 +22,7 @@ class BackupInteractor: Interactor {
     }
     
     func hasValidSubscription() -> Bool {
-        return PurchaseService.hasValidSubscriptionValue
+        return PurchaseService.hasValidPlusSubscriptionValue
     }
     
     func downloadZip(_ backup: RemoteBackupMetadata) {
@@ -167,7 +167,7 @@ class BackupInteractor: Interactor {
     }
     
     func purchaseSubscription() -> Observable<Void> {
-        return purchaseService.purchaseSubscription().asVoid()
+        return purchaseService.purchasePlusSubscription().asVoid()
     }
     
     func saveCurrent(provider: SyncProvider) {

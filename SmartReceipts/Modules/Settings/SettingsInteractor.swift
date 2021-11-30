@@ -20,10 +20,9 @@ class SettingsInteractor: Interactor {
     }
     
     func restoreSubscription() -> Observable<SubscriptionValidation> {
-        purchaseService.resetCache()
         return purchaseService.forceValidateSubscription()
             .do(onNext: { validation in
-                if validation.valid {
+                if validation.adsRemoved {
                     NotificationCenter.default.post(name: .SmartReceiptsAdsRemoved, object: nil)
                 }
             })
@@ -31,7 +30,7 @@ class SettingsInteractor: Interactor {
     
     func purchaseSubscription() -> Observable<Void> {
         AnalyticsManager.sharedManager.record(event: Event.Navigation.SmartReceiptsPlusOverflow)
-        return purchaseService.purchaseSubscription().asVoid()
+        return purchaseService.purchasePlusSubscription().asVoid()
     }
     
     func subscriptionValidation() -> Observable<SubscriptionValidation> {

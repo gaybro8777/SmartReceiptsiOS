@@ -28,11 +28,11 @@ class TripCSVGenerator: ReportCSVGenerator {
         
         appendDistancesTable(content)
         
-        if WBPreferences.includeCategoricalSummation() && PurchaseService.hasValidSubscriptionValue {
+        if WBPreferences.includeCategoricalSummation() && PurchaseService.hasValidPlusSubscriptionValue {
             appendCategoricalSummationTable(content)
         }
         
-        if WBPreferences.separatePaymantsByCategory() && PurchaseService.hasValidSubscriptionValue  {
+        if WBPreferences.separatePaymantsByCategory() && PurchaseService.hasValidPlusSubscriptionValue  {
             appendSeparatedByCategoryTable(content)
         }
         

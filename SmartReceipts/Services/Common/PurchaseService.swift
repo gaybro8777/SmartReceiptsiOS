@@ -16,9 +16,19 @@ let PRODUCT_PREMIUM_SUB = "ios_autorec_pro_1month"
 let PRODUCT_PLUS = "ios_plus_sku_2"
 
 fileprivate let APPSTORE_INTERACTED = "appstore_interacted"
-fileprivate let CACHED_VALIDATION_EXPIRE = "cached_validation_expireTime"
 
-typealias SubscriptionValidation = (valid: Bool, expireTime: Date?)
+struct SubscriptionValidation {
+    let plusValid: Bool
+    let plusExpireTime: Date?
+    let standardPurchased: Bool
+    let premiumPurchased: Bool
+    
+    var adsRemoved: Bool { plusValid || premiumPurchased }
+    
+    static func empty(standard: Bool = false, premium: Bool = false) -> SubscriptionValidation {
+        return .init(plusValid: false, plusExpireTime: nil, standardPurchased: standard, premiumPurchased: premium)
+    }
+}
 
 // Global Cached Validation
 private var cachedValidation: SubscriptionValidation?
@@ -26,6 +36,7 @@ private var cachedValidation: SubscriptionValidation?
 class PurchaseService {
     private let apiProvider: APIProvider<SmartReceiptsAPI>
     private let authService: AuthServiceInterface
+    private let validator:  AppleReceiptValidator
     private var plusSubsribtionProduct: SKProduct?
     static fileprivate var cachedProducts = [SKProduct]()
     let bag = DisposeBag()
@@ -33,41 +44,33 @@ class PurchaseService {
     init(apiProvider: APIProvider<SmartReceiptsAPI> = .init(), authService: AuthServiceInterface = AuthService.shared) {
         self.apiProvider = apiProvider
         self.authService = authService
-        
-        let expire = Date(timeIntervalSince1970: UserDefaults.standard.double(forKey: CACHED_VALIDATION_EXPIRE))
-        let valid = expire > Date()
-        if valid { cache(validation: (valid, expire)) }
+        self.validator = AppleReceiptValidator(
+            service: DebugStates.isDebug ? .sandbox : .production,
+            sharedSecret: "d6227a8e8b4442eb8dd138106d11834b"
+        )
         
         authService.loggedInObservable
-            .filter({ $0 && !PurchaseService.hasValidSubscriptionValue })
+            .filter({ $0 && !PurchaseService.hasValidPlusSubscriptionValue })
             .flatMap({ _ in
                 return apiProvider.request(.subscriptions).mapModel(SubscriptionsResponse.self)
             }).map({ response -> SubscriptionModel? in
                 return response.subscriptions.sorted(by: { $0.expiresAt > $1.expiresAt }).first
             }).filter({ $0 != nil })
-            .map({ SubscriptionValidation($0!.expiresAt > Date(), $0!.expiresAt) })
+            .map({ SubscriptionValidation(plusValid: $0!.expiresAt > Date(), plusExpireTime: $0!.expiresAt, standardPurchased: false, premiumPurchased: false) })
             .map({ validation -> SubscriptionValidation in
-                guard let cachedExpireTime = cachedValidation?.expireTime else { return validation }
-                return validation.expireTime! > cachedExpireTime ? validation : cachedValidation!
+                guard let cachedExpireTime = cachedValidation?.plusExpireTime else { return validation }
+                return validation.plusExpireTime! > cachedExpireTime ? validation : cachedValidation!
             })
-            .filter({ $0.valid })
-            .do(onNext: { [weak self] validation in self?.cache(validation: validation) })
+            .filter({ $0.plusValid })
             .do(onError: { error in
                 Logger.error(error.localizedDescription)
-            }).subscribe(onNext: { [weak self] validation in
-                self?.cache(validation: validation)
+            }).subscribe(onNext: { validation in
                 NotificationCenter.default.post(name: .SmartReceiptsAdsRemoved, object: nil)
             }).disposed(by: bag)
     }
     
-    private func cache(validation: SubscriptionValidation) {
-        cachedValidation = validation
-        guard let interval = validation.expireTime?.timeIntervalSince1970 else { return }
-        UserDefaults.standard.set(interval, forKey: CACHED_VALIDATION_EXPIRE)
-    }
-    
-    class var hasValidSubscriptionValue: Bool {
-        return DebugStates.isDebug && DebugStates.subscription() ? true : cachedValidation?.valid == true
+    class var hasValidPlusSubscriptionValue: Bool {
+        return DebugStates.isDebug && DebugStates.subscription() ? true : (cachedValidation?.plusValid == true || cachedValidation?.premiumPurchased == true)
     }
     
     func cacheProducts() {
@@ -118,10 +121,10 @@ class PurchaseService {
         })
     }
     
-    func restoreSubscription() -> Observable<Bool> {
+    func restorePlusSubscription() -> Observable<Bool> {
         return restorePurchases()
             .map({ purchases -> Bool in
-                return purchases.contains(where: { $0.productId == PRODUCT_PLUS })
+                return purchases.contains(where: { $0.productId == PRODUCT_PLUS || $0.productId == PRODUCT_PREMIUM_SUB })
             }).do(onNext: { [weak self] restored in
                 self?.markAppStoreInteracted()
                 if restored {
@@ -131,11 +134,10 @@ class PurchaseService {
             })
     }
     
-    func purchaseSubscription() -> Observable<PurchaseDetails> {
+    func purchasePlusSubscription() -> Observable<PurchaseDetails> {
         return purchase(prodcutID: PRODUCT_PLUS)
             .do(onNext: { [weak self] _ in
                 self?.markAppStoreInteracted()
-                self?.resetCache()
                 Logger.debug("Successful restore PLUS Subscription")
                 NotificationCenter.default.post(name: .SmartReceiptsAdsRemoved, object: nil)
             }, onError: handleError(_:))
@@ -205,7 +207,7 @@ class PurchaseService {
             for purchase in purchases {
                 switch purchase.transaction.transactionState {
                 case .purchased, .restored:
-                    if purchase.productId == PRODUCT_PLUS {
+                    if purchase.productId == PRODUCT_PLUS || purchase.productId == PRODUCT_PREMIUM_SUB {
                         NotificationCenter.default.post(name: .SmartReceiptsAdsRemoved, object: nil)
                     }
                 case .failed, .purchasing, .deferred:
@@ -231,17 +233,23 @@ class PurchaseService {
         let service: AppleReceiptValidator.VerifyReceiptURLType = DebugStates.isDebug ? .sandbox : .production
         let validator = AppleReceiptValidator(service: service, sharedSecret: nil)
         SwiftyStoreKit.verifyReceipt(using: validator) { [weak self] receiptResult in
-            switch receiptResult {
-            case .success(let receipt):
-                guard let purchaseResult = self?.verifySubscription(receipt: receipt) else { return }
-                Logger.debug("=== Purchases info ===")
-                switch purchaseResult {
+            
+            func logValidation(result: VerifySubscriptionResult) {
+                switch result {
                 case .purchased(_, let items):
                     self?.logReceiptItems(items)
                 case .expired(_, let items):
                     self?.logReceiptItems(items)
                 case .notPurchased: break
                 }
+            }
+            
+            switch receiptResult {
+            case .success(let receipt):
+                Logger.debug("=== Purchases info ===")
+                logValidation(result: SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: PRODUCT_STANDARD_SUB, inReceipt: receipt))
+                logValidation(result: SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: PRODUCT_PREMIUM_SUB, inReceipt: receipt))
+                logValidation(result: SwiftyStoreKit.verifySubscription(ofType: .nonRenewing(validDuration: .year), productId: PRODUCT_PLUS, inReceipt: receipt))
                 Logger.debug("======================")
             case .error(let error):
                 Logger.error(error.localizedDescription)
@@ -293,16 +301,10 @@ class PurchaseService {
     
     //MARK: - PurchaseService and Subscription
     
-    func resetCache() {
-        cachedValidation = nil
-        UserDefaults.standard.set(0, forKey: CACHED_VALIDATION_EXPIRE)
-    }
-    
     func cacheSubscriptionValidation() {
         validateSubscription()
-            .do(onNext: { [weak self] in self?.cache(validation: $0) })
             .subscribe(onNext: { validation in
-                Logger.debug("Cached Validation: Valid = \(validation.valid), expire: \(String(describing: validation.expireTime))")
+                Logger.debug("Cached Validation: Valid = \(validation.plusValid), expire: \(String(describing: validation.plusExpireTime))")
             }, onError: { error in
                 Logger.error(error.localizedDescription)
             }).disposed(by: bag)
@@ -310,46 +312,36 @@ class PurchaseService {
     
     func hasValidSubscription() -> Observable<Bool> {
         return validateSubscription().map({ validation -> Bool in
-            return validation.valid
+            return validation.plusValid
         })
     }
     
     func subscriptionExpirationDate() -> Observable<Date?> {
         return validateSubscription().map({ validation -> Date? in
-            return validation.expireTime
+            return validation.plusExpireTime
         })
     }
     
     func validateSubscription() -> Observable<SubscriptionValidation> {
-        if cachedValidation?.valid == true { return .just(cachedValidation!) }
-        if !isAppStoreInteracted() { return .just((false, nil)) }
+        if cachedValidation?.plusValid == true { return .just(cachedValidation!) }
+        if !isAppStoreInteracted() { return .just(.empty()) }
         return forceValidateSubscription()
     }
     
     func forceValidateSubscription() -> Observable<SubscriptionValidation> {
         if DebugStates.subscription() {
-            return Observable<SubscriptionValidation>.just((true, Date.distantFuture))
+            return Observable<SubscriptionValidation>.just(.init(plusValid: true, plusExpireTime: nil, standardPurchased: true, premiumPurchased: true))
         } else if let validation = cachedValidation {
             return Observable<SubscriptionValidation>.just(validation)
         }
         
         return Observable<SubscriptionValidation>.create({ [weak self] observable -> Disposable in
-            let service: AppleReceiptValidator.VerifyReceiptURLType = DebugStates.isDebug ? .sandbox : .production
-            let validator = AppleReceiptValidator(service: service, sharedSecret: nil)
-            SwiftyStoreKit.verifyReceipt(using: validator) { receiptResult in
+            guard let self = self else { return Disposables.create() }
+            SwiftyStoreKit.verifyReceipt(using: self.validator) { receiptResult in
                 switch receiptResult {
                 case .success(let receipt):
-                    self?.markAppStoreInteracted()
-                    guard let purchaseResult = self?.verifySubscription(receipt: receipt) else { return }
-                    switch purchaseResult {
-                    case .purchased(let expiryDate, _):
-                        observable.onNext((true, expiryDate))
-                    case .expired(let expiryDate, _):
-                        observable.onNext((false, expiryDate))
-                    case .notPurchased:
-                        observable.onNext((false, nil))
-                    }
-                    
+                    self.markAppStoreInteracted()
+                    observable.onNext(self.verifySubscription(receipt: receipt))
                 case .error(let error):
                     observable.onError(error)
                 }
@@ -357,12 +349,25 @@ class PurchaseService {
             }
             return Disposables.create()
         }).catchError({ error -> Observable<SubscriptionValidation> in
-            return Observable<SubscriptionValidation>.just((false, nil))
-        }).do(onNext: { [weak self] in self?.cache(validation: $0) })
+            return Observable<SubscriptionValidation>.just(.empty())
+        })
     }
     
-    func verifySubscription(receipt: ReceiptInfo) -> VerifySubscriptionResult {
-        return SwiftyStoreKit.verifySubscription(ofType: .nonRenewing(validDuration: .year), productId: PRODUCT_PLUS, inReceipt: receipt)
+    func verifySubscription(receipt: ReceiptInfo) -> SubscriptionValidation {
+        var standard: Bool = false
+        var premium: Bool = false
+        
+        let premiumVerify = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: PRODUCT_PREMIUM_SUB, inReceipt: receipt)
+        let standardVerify = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: PRODUCT_STANDARD_SUB, inReceipt: receipt)
+        
+        if case .purchased = premiumVerify { premium = true}
+        if case .purchased = standardVerify { standard = true }
+        
+        switch SwiftyStoreKit.verifySubscription(ofType: .nonRenewing(validDuration: .year), productId: PRODUCT_PLUS, inReceipt: receipt) {
+        case .purchased(let expiryDate, _): return .init(plusValid: true, plusExpireTime: expiryDate, standardPurchased: standard, premiumPurchased: premium)
+        case .expired(let expiryDate, _): return .init(plusValid: false, plusExpireTime: expiryDate, standardPurchased: standard, premiumPurchased: premium)
+        case .notPurchased: return .empty(standard: standard, premium: premium)
+        }
     }
     
     func markAppStoreInteracted() {

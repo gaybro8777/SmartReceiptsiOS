@@ -33,7 +33,7 @@ final class TripsView: FetchedTableViewController {
         AppTheme.customizeOnViewDidLoad(self)
         lastDateFormat = WBPreferences.dateFormat()
         setPresentationCellNib(TripCell.viewNib())
-        title = PurchaseService.hasValidSubscriptionValue ? AppTheme.appTitlePlus : AppTheme.appTitle
+        title = PurchaseService.hasValidPlusSubscriptionValue ? AppTheme.appTitlePlus : AppTheme.appTitle
         
         configurePrivacyTooltip()
         configureRx()

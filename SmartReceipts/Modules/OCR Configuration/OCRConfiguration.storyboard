@@ -16,45 +16,45 @@
                         <viewControllerLayoutGuide type="bottom" id="vb6-4r-Epx"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kgt-o0-aP8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="640"/>
+                        <rect key="frame" x="0.0" y="0.0" width="410" height="640"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5d-L5-IgL">
-                                <rect key="frame" x="0.0" y="88" width="320" height="552"/>
+                                <rect key="frame" x="0.0" y="88" width="410" height="552"/>
                                 <subviews>
                                     <view contentMode="scaleAspectFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X1N-pM-HX2">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="650"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="410" height="619"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="900" verticalCompressionResistancePriority="600" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VMI-xq-cpv">
-                                                <rect key="frame" x="16" y="49" width="288" height="186.5"/>
-                                                <mutableString key="text">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos. 
-We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</mutableString>
+                                                <rect key="frame" x="16" y="49" width="378" height="155.5"/>
+                                                <string key="text">Smart Receipts has integrated with Taggun to provide automatic scanning (ie OCR) services, which can extract receipt metadata like the price, tax, date, and merchant name from your photos. 
+We use a combination of Google Vision and Machine Learning to quickly (often in 5 seconds or less) deliver results, which will become increasingly accurate over time. Since these services have a per-usage charge, we will charge for each receipt scan below.</string>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hpf-uN-9yQ">
-                                                <rect key="frame" x="16" y="336.5" width="288" height="1"/>
+                                                <rect key="frame" x="16" y="305.5" width="378" height="1"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="0hd-Pf-sb0"/>
                                                 </constraints>
                                             </view>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1LH-ps-UJx">
-                                                <rect key="frame" x="255" y="290.5" width="51" height="31"/>
+                                                <rect key="frame" x="345" y="259.5" width="51" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="49" id="dnI-9M-WR8"/>
                                                 </constraints>
                                                 <color key="onTintColor" red="0.18823529410000001" green="0.1058823529" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Automatic Scans (OCR)?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOD-34-ock">
-                                                <rect key="frame" x="16" y="258.5" width="231" height="17"/>
+                                                <rect key="frame" x="16" y="227.5" width="321" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reE-ir-Wvr">
-                                                <rect key="frame" x="255" y="251.5" width="51" height="31"/>
+                                                <rect key="frame" x="345" y="220.5" width="51" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="49" id="dcm-hp-aQv"/>
                                                 </constraints>
@@ -70,24 +70,24 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNz-Z1-pxa" customClass="ScansPurchaseButton" customModule="SmartReceipts" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="508" width="288" height="102"/>
+                                                <rect key="frame" x="16" y="477" width="378" height="102"/>
                                                 <subviews>
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="TKd-iA-SHW">
-                                                        <rect key="frame" x="244" y="41" width="20" height="20"/>
+                                                        <rect key="frame" x="334" y="41" width="20" height="20"/>
                                                         <color key="color" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </activityIndicatorView>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="-20" translatesAutoresizingMaskIntoConstraints="NO" id="QRU-nn-RRT">
-                                                        <rect key="frame" x="154" y="25" width="110" height="52"/>
+                                                        <rect key="frame" x="224" y="25" width="130" height="52"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$3.99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="phz-5O-gkL">
-                                                                <rect key="frame" x="0.0" y="0.0" width="110" height="36"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$3.99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="phz-5O-gkL">
+                                                                <rect key="frame" x="0.0" y="0.0" width="130" height="36"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rk-MH-uj6">
-                                                                <rect key="frame" x="0.0" y="16" width="110" height="36"/>
+                                                                <rect key="frame" x="0.0" y="16" width="130" height="36"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="10"/>
                                                                 <color key="textColor" white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -96,7 +96,7 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="110" id="hfY-Hz-T6L"/>
+                                                            <constraint firstAttribute="width" constant="130" id="hfY-Hz-T6L"/>
                                                             <constraint firstAttribute="height" constant="52" id="vSk-A5-jiq"/>
                                                             <constraint firstItem="5Rk-MH-uj6" firstAttribute="centerX" secondItem="phz-5O-gkL" secondAttribute="centerX" id="xna-rC-rDy"/>
                                                         </constraints>
@@ -108,7 +108,7 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Standard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="t9N-Ss-EJV">
-                                                        <rect key="frame" x="20" y="25" width="114" height="33.5"/>
+                                                        <rect key="frame" x="20" y="25" width="184" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                                         <color key="textColor" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -137,37 +137,40 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dC-cs-CAa" customClass="ScansPurchaseButton" customModule="SmartReceipts" customModuleProvider="target">
-                                                <rect key="frame" x="16" y="390" width="288" height="102"/>
+                                                <rect key="frame" x="16" y="359" width="378" height="102"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Standard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="zYH-Hy-VHA">
-                                                        <rect key="frame" x="20" y="24" width="114" height="33.5"/>
+                                                        <rect key="frame" x="20" y="24" width="184" height="33.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                                                         <color key="textColor" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main functions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="baK-7S-7dZ">
-                                                        <rect key="frame" x="20" y="57.5" width="114" height="16"/>
+                                                        <rect key="frame" x="20" y="57.5" width="184" height="16"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                         <color key="textColor" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="xfX-pX-rDM">
-                                                        <rect key="frame" x="244" y="43" width="20" height="20"/>
+                                                        <rect key="frame" x="334" y="43" width="20" height="20"/>
                                                         <color key="color" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </activityIndicatorView>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="-20" translatesAutoresizingMaskIntoConstraints="NO" id="DmJ-dm-PVm">
-                                                        <rect key="frame" x="154" y="25" width="110" height="52"/>
+                                                        <rect key="frame" x="224" y="25" width="130" height="52"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$3.99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fae-RS-vgj">
-                                                                <rect key="frame" x="0.0" y="0.0" width="110" height="36"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$3.99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="Fae-RS-vgj">
+                                                                <rect key="frame" x="0.0" y="0.0" width="130" height="36"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="per month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVt-tk-VTl">
-                                                                <rect key="frame" x="0.0" y="16" width="110" height="36"/>
+                                                                <rect key="frame" x="0.0" y="16" width="130" height="36"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="130" id="DWy-10-umx"/>
+                                                                </constraints>
                                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="10"/>
                                                                 <color key="textColor" white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -175,7 +178,6 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.30327910180000001" green="0.18196699020000001" blue="0.68422716859999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="110" id="9VW-jd-NJP"/>
                                                             <constraint firstItem="VVt-tk-VTl" firstAttribute="centerX" secondItem="Fae-RS-vgj" secondAttribute="centerX" id="MhP-9L-Ycf"/>
                                                             <constraint firstAttribute="height" constant="52" id="bWu-au-HLV"/>
                                                         </constraints>
@@ -205,13 +207,13 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                                                 </connections>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Available Purchases - Tap to Buy:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogS-OY-kJv">
-                                                <rect key="frame" x="16" y="353.5" width="258.5" height="20.5"/>
+                                                <rect key="frame" x="16" y="322.5" width="258.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow us to save images to improve accuracy?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHC-vY-BPq">
-                                                <rect key="frame" x="16" y="289.5" width="231" height="33.5"/>
+                                                <rect key="frame" x="16" y="266.5" width="321" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -272,7 +274,7 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="640"/>
+                    <size key="freeformSize" width="410" height="640"/>
                     <connections>
                         <outlet property="allowSaveImages" destination="1LH-ps-UJx" id="583-9i-i01"/>
                         <outlet property="autoScans" destination="reE-ir-Wvr" id="Hnz-Pd-9CV"/>
@@ -281,9 +283,9 @@ We use a combination of Google Vision and Machine Learning to quickly (often in 
                         <outlet property="closeButton" destination="yL2-Ak-nBw" id="tmY-E0-7dX"/>
                         <outlet property="descriptionLabel" destination="VMI-xq-cpv" id="Jbb-of-ejZ"/>
                         <outlet property="logoutButton" destination="rmD-D8-Kiu" id="Upg-b3-10O"/>
+                        <outlet property="premiumButton" destination="tNz-Z1-pxa" id="hoh-5h-gpG"/>
                         <outlet property="saveImagesLabel" destination="jHC-vY-BPq" id="fgd-GF-R7l"/>
-                        <outlet property="scans10button" destination="0dC-cs-CAa" id="FDJ-ZS-p2z"/>
-                        <outlet property="scans50button" destination="tNz-Z1-pxa" id="hoh-5h-gpG"/>
+                        <outlet property="standardButton" destination="0dC-cs-CAa" id="FDJ-ZS-p2z"/>
                         <outlet property="titleLabel" destination="CJG-kY-Toe" id="wJM-b9-9p4"/>
                     </connections>
                 </viewController>

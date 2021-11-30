@@ -1,4 +1,4 @@
-platform :ios, '10.0'
+platform :ios, '12.0'
 
 inhibit_all_warnings!
 use_frameworks!
@@ -18,7 +18,7 @@ def pods
     
     # UI
     pod 'lottie-ios'
-    pod 'Eureka'
+    pod 'Eureka', '5.3.4'
     pod 'Toaster', :git => 'https://github.com/devxoul/Toaster.git', :branch => 'master'
     pod 'Charts'
     
@@ -69,6 +69,6 @@ end
 
 post_install do |installer|
     installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+#      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
     end
 end

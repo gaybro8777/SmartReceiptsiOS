@@ -44,7 +44,7 @@ class AdPresentingContainerViewController: UIViewController {
                 AnalyticsManager.sharedManager.record(event: Event.Purchases.AdUpsellTapped)
             }).subscribe(onNext: { [unowned self] in
                 let hud = PendingHUDView.showFullScreen()
-                _ = self.purchaseService.purchaseSubscription().do(onNext: { _ in
+                _ = self.purchaseService.purchasePlusSubscription().do(onNext: { _ in
                     hud.hide()
                 }, onError: { _ in
                     hud.hide()
@@ -79,7 +79,7 @@ class AdPresentingContainerViewController: UIViewController {
     
     @objc private func checkAdsStatus() {
         purchaseService.validateSubscription().subscribe(onNext: { [unowned self] validation in
-            if validation.valid {
+            if validation.adsRemoved {
                 Logger.debug("Remove Ads")
 
                 self.adContainerHeight.constant = 0

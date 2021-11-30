@@ -36,25 +36,17 @@ class ScansPurchaseButton: UIButton {
         apply(style: .purchaseButton)
     }
     
-    func setScans(count: Int) {
-        // price
-        if count > 40 {
-            priceBackground.backgroundColor = .srViolet2
-            priceSubtitle.isHidden = false
-            price.textColor = .white
-        } else {
+    func set(purchased: Bool) {
+        if purchased {
             priceBackground.backgroundColor = .srLightGray
             priceSubtitle.isHidden = true
             price.textColor = .srViolet2
+            price.text = "Your Plan"
+        } else {
+            priceBackground.backgroundColor = .srViolet2
+            priceSubtitle.isHidden = false
+            price.textColor = .white
         }
-        
-        
-        
-//        let titleFormat = LocalizedString("ocr_configuration_module_purchase_title")
-//        title.text = String(format: titleFormat, count)
-        
-//        let subtitleFormat = LocalizedString("ocr_configuration_module_purchase_subtitle")
-//        subtitle.text = String(format: subtitleFormat, count)
     }
 }
 

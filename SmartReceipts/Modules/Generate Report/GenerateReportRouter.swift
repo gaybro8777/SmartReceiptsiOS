@@ -15,7 +15,7 @@ class GenerateReportRouter: Router {
     private var inerstitialDelegate: InerstitialDelegate?
     
     func prepareAds() {
-        guard !PurchaseService.hasValidSubscriptionValue else { return }
+        guard !PurchaseService.hasValidPlusSubscriptionValue else { return }
         let updateBlock = { [weak self] in
             self?.interstitial = GADInterstitial(adUnitID: AD_UNIT_ID_INTERSTITIAL)
             self?.interstitial?.delegate = self?.inerstitialDelegate
@@ -65,7 +65,7 @@ class GenerateReportRouter: Router {
     }
     
     func openInterstitialAd() {
-        guard !PurchaseService.hasValidSubscriptionValue else { return }
+        guard !PurchaseService.hasValidPlusSubscriptionValue else { return }
         interstitial?.present(fromRootViewController: _view.viewController)
     }
 }

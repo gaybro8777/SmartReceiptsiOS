@@ -68,27 +68,27 @@ class PurchaseServiceTest: XCTestCase {
     }
     
     func testValidSubscription() {
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
         purchaseServiceSuccess.cacheSubscriptionValidation()
-        XCTAssertTrue(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertTrue(PurchaseService.hasValidPlusSubscriptionValue)
     }
     
     func testResetCache() {
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
         purchaseServiceSuccess.cacheSubscriptionValidation()
-        XCTAssertTrue(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertTrue(PurchaseService.hasValidPlusSubscriptionValue)
         purchaseServiceSuccess.resetCache()
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
     }
     
     func testExpiredSubscription() {
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
         purchaseServiceFail.cacheSubscriptionValidation()
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
     }
     
     func testRestoreSubscription() {
-        XCTAssertFalse(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertFalse(PurchaseService.hasValidPlusSubscriptionValue)
         
         let responseClosure = { (target: SmartReceiptsAPI) -> Endpoint in
             let jsonData = Data.loadFrom(filename: "Subscriptions", type: "json")
@@ -104,6 +104,6 @@ class PurchaseServiceTest: XCTestCase {
         apiProvider = APIProvider<SmartReceiptsAPI>(endpointClosure: responseClosure, stubClosure: MoyaProvider.immediatelyStub)
         _ = PurchaseService(apiProvider: apiProvider, authService: authService)
         
-        XCTAssertTrue(PurchaseService.hasValidSubscriptionValue)
+        XCTAssertTrue(PurchaseService.hasValidPlusSubscriptionValue)
     }
 }

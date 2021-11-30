@@ -174,7 +174,7 @@ DEPENDENCIES:
   - Charts
   - CocoaLumberjack/Swift
   - Cuckoo
-  - Eureka
+  - Eureka (= 5.3.4)
   - Firebase/AdMob
   - Firebase/Analytics
   - Firebase/Core (= 7.2-M1)
@@ -301,6 +301,6 @@ SPEC CHECKSUMS:
   Viperit: a3dac14fdb04cd6fefe5fe44b5b6a4931a6d05da
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 4da96f57344e520a9deb5b19f51a9d5a15558f74
+PODFILE CHECKSUM: 52b8c140de4c6d10a6a68155634b949ef4102eb9
 
 COCOAPODS: 1.11.2

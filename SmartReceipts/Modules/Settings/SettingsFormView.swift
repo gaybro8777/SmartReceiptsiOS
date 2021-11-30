@@ -86,9 +86,9 @@ class SettingsFormView: FormViewController {
                     self?.hud?.hide()
                 }, onError: { [weak self] _ in
                     self?.hud?.hide()
-                }).filter({ $0.valid })
+                }).filter({ $0.plusValid })
                 .subscribe(onNext: { [weak self] validation in
-                    self?.setupPurchased(expireDate: validation.expireTime)
+                    self?.setupPurchased(expireDate: validation.plusExpireTime)
                 }, onError: { error in
                     self.alertSubject.onNext((title: LocalizedString("purchase_unavailable"), message: error.localizedDescription))
                 }).disposed(by: self.bag)
@@ -557,8 +557,8 @@ class SettingsFormView: FormViewController {
     private func checkSubscription() {
         settingsView.subscriptionValidation().subscribe(onNext: { [weak self] validation in
             self?.hud?.hide()
-            if validation.valid {
-                self?.setupPurchased(expireDate: validation.expireTime)
+            if validation.plusValid {
+                self?.setupPurchased(expireDate: validation.plusExpireTime)
             } else {
                 _ = self?.settingsView.retrivePlusSubscriptionPrice().subscribe(onNext: { [weak self] price in
                     self?.purchaseRow.setPrice(string: price)

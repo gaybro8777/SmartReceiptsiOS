@@ -13,17 +13,18 @@ import RxCocoa
 
 //MARK: - Public Interface Protocol
 protocol OCRConfigurationViewInterface {
-    var buy10ocr: Observable<Void> { get }
-    var buy50ocr: Observable<Void> { get }
+    var buyStandard: Observable<Void> { get }
+    var buyPremium: Observable<Void> { get }
     
-    var OCR10Price: AnyObserver<String> { get }
-    var OCR50Price: AnyObserver<String> { get }
+    var standardPrice: AnyObserver<String> { get }
+    var premiumPrice: AnyObserver<String> { get }
     
     func updateScansCount()
     
     var logoutTap: Observable<Void> { get }
     var successLogoutHandler: AnyObserver<Void> { get }
     var errorHandler: AnyObserver<String> { get }
+    func applySubscriptionsValidation(validation: SubscriptionValidation)
 }
 
 //MARK: OCRConfigurationView Class
@@ -34,8 +35,8 @@ final class OCRConfigurationView: UserInterface {
     @IBOutlet private weak var saveImagesLabel: UILabel!
     @IBOutlet private weak var availablePurchases: UILabel!
     @IBOutlet private weak var closeButton: UIBarButtonItem!
-    @IBOutlet fileprivate weak var scans10button: ScansPurchaseButton!
-    @IBOutlet fileprivate weak var scans50button: ScansPurchaseButton!
+    @IBOutlet fileprivate weak var standardButton: ScansPurchaseButton!
+    @IBOutlet fileprivate weak var premiumButton: ScansPurchaseButton!
     
     @IBOutlet fileprivate weak var autoScans: UISwitch!
     @IBOutlet fileprivate weak var allowSaveImages: UISwitch!
@@ -46,9 +47,6 @@ final class OCRConfigurationView: UserInterface {
     override func viewDidLoad() {
         super.viewDidLoad()
         localizeLabels()
-    
-        scans10button.setScans(count: 10)
-        scans50button.setScans(count: 50)
         
         autoScans.isOn = WBPreferences.automaticScansEnabled()
         allowSaveImages.isOn = WBPreferences.allowSaveImageForAccuracy()
@@ -62,6 +60,11 @@ final class OCRConfigurationView: UserInterface {
             .subscribe(onSuccess: { [weak self] in
                 self?.setTitle($0, subtitle: AuthService.shared.email)
             }).disposed(by: bag)
+    }
+    
+    func applySubscriptionsValidation(validation: SubscriptionValidation) {
+        standardButton.set(purchased: validation.standardPurchased)
+        premiumButton.set(purchased: validation.premiumPurchased)
     }
     
     private func configureRx() {
@@ -105,11 +108,11 @@ final class OCRConfigurationView: UserInterface {
 
 //MARK: - Public interface
 extension OCRConfigurationView: OCRConfigurationViewInterface {
-    var buy10ocr: Observable<Void> { return scans10button.rx.tap.asObservable() }
-    var buy50ocr: Observable<Void> { return scans50button.rx.tap.asObservable() }
+    var buyStandard: Observable<Void> { return standardButton.rx.tap.asObservable() }
+    var buyPremium: Observable<Void> { return premiumButton.rx.tap.asObservable() }
     
-    var OCR10Price: AnyObserver<String> { return scans10button.rx.price }
-    var OCR50Price: AnyObserver<String> { return scans50button.rx.price }
+    var standardPrice: AnyObserver<String> { return standardButton.rx.price }
+    var premiumPrice: AnyObserver<String> { return premiumButton.rx.price }
     
     var successLogoutHandler: AnyObserver<Void> {
         return AnyObserver<Void>(eventHandler: { [weak self] event in
